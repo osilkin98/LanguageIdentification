@@ -38,7 +38,7 @@ def get_code_labels(filename="new_languages.txt", resort_to_fallback=False):
 
 # Create a dataset from a given filename
 def create_tokenized_data_set(json_file="data_index.json", overwrite_file=False, features=max_features):
-    code, labels = get_code_labels()
+    code, labels = get_code_labels(filename="new_languages.txt")
 
     # Create a tokenizer to preprocess our text data
     tokenizer = pp.text.Tokenizer(num_words=features)

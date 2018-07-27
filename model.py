@@ -1,7 +1,7 @@
 import keras as ks
 import load_data as ld
 from sklearn.model_selection import train_test_split
-
+import json
 
 # Create the model given a number of languages
 def create_model(num_languages):
@@ -61,7 +61,7 @@ def create_model(num_languages):
 # Main function to perform the training and testing operations with
 def main_train():
     # Get the data, [X -> code samples, Y -> language labels]
-    code, languages = ld.create_tokenized_data_set()
+    code, languages = ld.create_tokenized_data_set(json_file="data_index.json", overwrite_file=True)
 
     training_code, testing_code, training_labels, testing_labels = train_test_split(code, languages,
                                                                                     test_size=0.2, random_state=42)
@@ -87,17 +87,23 @@ def main_train():
 
 
 def evaluate_file(filename):
-    raw_code = ""
-    try:
-        with open(file=filename, mode='r') as readfile:
-            raw_code += readfile.read()
-    except FileNotFoundError:
-        print("{} was not found, returning.".format(filename))
-        return
+    model = ks.models.load_model(filepath="saved_models/code_model.h5")
+    model.load_weights(filepath="saved_models/code_model_weights.h5")
+    to_eval = ld.create_input_evaluation(filename)
+    to_eval = to_eval[0].reshape(1, to_eval.shape[1])
+    print("To Eval: {}".format(to_eval))
+    language_probabilities = model.predict(to_eval, batch_size=1, verbose=2)[0]
+    print("Language Probabilities: {}".format(language_probabilities))
+    data = {"success": False}
+    data["predictions"] = []
 
-    indexed_text = ld.text_to_index_array(raw_code)
+    for i in range(len(ld.languages)):
+        r = {"label": ld.languages[i], "probability": "{0:.3f}% ".format(language_probabilities[i]*100)}
+        data["predictions"].append(r)
+    data["success"] = True
 
+    print(json.dumps(data, indent=4))
 
 
 if __name__ == "__main__":
-    main_train()
+    evaluate_file("test.cpp")
