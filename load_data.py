@@ -4,18 +4,28 @@ import pandas as pd
 import json
 
 
-def get_code_labels(filename="filename.txt"):
-    soup = BeautifulSoup(open(filename), "html.parser")
+def get_code_labels(filename="languages.txt", resort_to_fallback=False):
+    soup = None
+    try:
+        soup = BeautifulSoup(open(filename), "html.parser")
 
-    # create empty lists for the samples and the labels
-    code_samples, labels = list(), list()
+    except FileNotFoundError as fnf:
+        if resort_to_fallback:
+            print("input file {} not found, resorting to fallback file 'languages.txt'".format(filename))
+            soup = BeautifulSoup(open("languages.txt"), "html.parser")
+        else:
+            print("input file {} not found, returning None, None".format(filename))
+            return None, None
+    finally:
+        # create empty lists for the samples and the labels
+        code_samples, labels = list(), list()
 
-    # iterate through each pretag and extract the code and append it to the sample list
-    for tag in soup.find_all(name="pre", text=True):
-        code_samples.append(str(tag.contents[0]))
-        labels.append(tag["lang"].lower())
+        # iterate through each pretag and extract the code and append it to the sample list
+        for tag in soup.find_all(name="pre", text=True):
+            code_samples.append(str(tag.contents[0]))
+            labels.append(tag["lang"].lower())
 
-    return code_samples, labels
+        return code_samples, labels
 
 
 # Create a dataset from a given filename
