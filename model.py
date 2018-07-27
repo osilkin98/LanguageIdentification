@@ -1,6 +1,6 @@
 import keras as ks
 import load_data as ld
-from sklearn import cross_validation
+from sklearn.model_selection import train_test_split
 
 
 # Create the model given a number of languages
@@ -58,7 +58,29 @@ def create_model(num_languages):
     return model
 
 
-
 # Main function to perform the training and testing operations with
 def main():
-    X, Y = ld.create_tokenized_data_set()
+    # Get the data, [X -> code samples, Y -> language labels]
+    code, languages = ld.create_tokenized_data_set()
+
+    training_code, testing_code, training_labels, testing_labels = train_test_split(code, languages,
+                                                                                    test_size=0.2, random_state=42)
+
+    print("Training_code shape: {}\nTesting_code shape: {}".format(training_code.shape, testing_code.shape))
+
+    model = create_model(len(languages))
+
+    print("Model Summary: {}".format(model.summary()))
+
+    batch_size = 32
+
+    history = model.fit(code, languages, epochs=400, batch_size=batch_size)
+
+    model.save(filepath="saved_models/code_model.h5")
+    model.save_weights(filepath="saved_models/code_model_weights.h5")
+    score, accuracy = model.evaluate(testing_code, testing_labels, verbose=2, batch_size=batch_size)
+
+    print("Metric names: {}\nValidation loss: {}\nValidation Accuracy: {}".format(model.metrics_names,
+                                                                                  score,
+                                                                                  accuracy))
+
