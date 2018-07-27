@@ -85,5 +85,18 @@ def text_to_index_array(text):
     return word_vector
 
 
-languages = ('c#', 'c++', 'fortran', 'haskell', 'holyc', 'java', 'javascript',
-             'javscript', 'lua', 'objective-c', 'python', 'r', 'ruby')
+# Creates the necessary input set needed for code evaluation
+def create_input_evaluation(filename):
+    raw_code = ""
+    try:
+        with open(file=filename, mode='r') as readfile:
+            raw_code += readfile.read()
+    except FileNotFoundError:
+        print("{} was not found, returning.".format(filename))
+        return None
+
+    # convert the raw code given into an indexed array
+    indexed_text = text_to_index_array(raw_code)
+    return pp.sequence.pad_sequences(sequences=list(indexed_text), maxlen=100)  # Pad the sequence to be at most 100
+
+
