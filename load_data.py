@@ -69,7 +69,8 @@ def create_tokenized_data_set(json_file="data_index.json", overwrite_file=False,
 # Given a stream of text, convert it into an index array
 def text_to_index_array(text):
     word_vector = []
-    global dictionary
+    with open(file="data_index.json", mode='r') as infile:
+        dictionary = json.load(infile)
 
     for word in pp.text.text_to_word_sequence(text):
         if word in dictionary:
