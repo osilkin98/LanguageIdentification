@@ -72,6 +72,7 @@ def text_to_index_array(text):
     with open(file="data_index.json", mode='r') as infile:
         dictionary = json.load(infile)
 
+    print("json file: {}".format(json.dumps(dictionary, indent=4)))
     for word in pp.text.text_to_word_sequence(text):
         if word in dictionary:
             if dictionary[word] <= max_features:
