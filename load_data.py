@@ -3,6 +3,8 @@ from keras import preprocessing as pp
 import pandas as pd
 import json
 
+max_features = 10000
+
 
 def get_code_labels(filename="languages.txt", resort_to_fallback=False):
     soup = None
@@ -29,7 +31,7 @@ def get_code_labels(filename="languages.txt", resort_to_fallback=False):
 
 
 # Create a dataset from a given filename
-def create_tokenized_data_set(json_file="data_index.json", overwrite_file=False, features=10000):
+def create_tokenized_data_set(json_file="data_index.json", overwrite_file=False, features=max_features):
     code, labels = get_code_labels()
 
     # Create a tokenizer to preprocess our text data
