@@ -84,3 +84,6 @@ def main():
                                                                                   score,
                                                                                   accuracy))
 
+
+if __name__ == "__main__":
+    main()
