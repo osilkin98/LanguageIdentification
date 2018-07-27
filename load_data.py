@@ -12,7 +12,7 @@ languages = ('angular', 'asm', 'asp.net', 'c#', 'c++', 'css', 'delphi', 'html',
         'swift', 'typescript', 'vb.net', 'xml')
 
 
-def get_code_labels(filename="languages.txt", resort_to_fallback=False):
+def get_code_labels(filename="new_languages.txt", resort_to_fallback=False):
     soup = None
     try:
         soup = BeautifulSoup(open(filename), "html.parser")
