@@ -55,7 +55,7 @@ def create_tokenized_data_set(json_file="data_index.json", overwrite_file=False,
         print("Found existing {} file".format(json_file))
         if overwrite_file:
             print("overwriting")
-            with open(file=json_file, mode='x') as outfile:
+            with open(file=json_file, mode='w') as outfile:
                 json.dump(obj=tokenized_word_index, fp=outfile)
 
     except Exception as e:
