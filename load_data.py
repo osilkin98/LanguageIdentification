@@ -58,3 +58,24 @@ def create_tokenized_data_set(json_file="data_index.json", overwrite_file=False,
     X = tokenizer.texts_to_sequences(code)
     # Pad the input sequences to be 100 input sequences at most
     return pp.sequence.pad_sequences(sequences=X, maxlen=100), pd.get_dummies(data=labels)
+
+
+# Given a stream of text, convert it into an index array
+def text_to_index_array(text):
+    word_vector = []
+    global dictionary
+
+    for word in pp.text.text_to_word_sequence(text):
+        if word in dictionary:
+            if dictionary[word] <= max_features:
+                word_vector.append([dictionary[word]])
+            else:
+                word_vector.append([0])  # append just a 0 to denote an undefined/unseen variable
+        else:
+            word_vector.append([0])  # append a zero to denote an <unknown> word feature
+
+    return word_vector
+
+
+languages = ('c#', 'c++', 'fortran', 'haskell', 'holyc', 'java', 'javascript',
+             'javscript', 'lua', 'objective-c', 'python', 'r', 'ruby')
