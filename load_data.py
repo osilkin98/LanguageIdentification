@@ -3,7 +3,13 @@ from keras import preprocessing as pp
 import pandas as pd
 import json
 
+
+# Constants
 max_features = 10000
+languages = ('angular', 'asm', 'asp.net', 'c#', 'c++', 'css', 'delphi', 'html',
+        'java', 'javascript', 'objectivec', 'pascal', 'perl', 'php',
+        'powershell', 'python', 'razor', 'react', 'ruby', 'scala', 'sql',
+        'swift', 'typescript', 'vb.net', 'xml')
 
 
 def get_code_labels(filename="languages.txt", resort_to_fallback=False):
