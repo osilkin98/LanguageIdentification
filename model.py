@@ -15,7 +15,7 @@ def create_model(num_languages):
 
     # Outputs a matrix of size 100x128 with 49280 parameters to train
     model.add(ks.layers.Conv1D(filters=embed_dimension,  # Convolve using 128 filters
-                               kernel_size=3,            # with a kernel size of 3
+                               kernel_size=5,            # with a kernel size of 3
                                padding='same',           # Use 0 padding
                                dilation_rate=1,          # We'll using D = 1 so that way the kernels are densely packed
                                activation='relu'))       # ReLU activation layer since it works well
@@ -25,7 +25,7 @@ def create_model(num_languages):
     model.add(ks.layers.MaxPooling1D(pool_size=4))
 
     # Next we'll reduce the amount of filters being used by 1/2 so that the output is (25x64)
-    model.add(ks.layers.Conv1D(filters=embed_dimension/2,  # 128/2
+    model.add(ks.layers.Conv1D(filters=64,  # 128/2
                                kernel_size=3,            # The same kernel size as last time
                                padding='same',           # 0 padding as last time
                                dilation_rate=1,          # Same dilation rate of 1
@@ -33,10 +33,10 @@ def create_model(num_languages):
 
     # Now we'll reduce the output size from (25x64) to (25/2x64) => (floor(12.5)x64) => (12x64)
     # Using a max pooling layer with a pool size of just 2
-    model.add(ks.layers.MaxPooling1D(padding=2))
+    model.add(ks.layers.MaxPooling1D(pool_size=2))
 
     # Now we'll add a bi-directional LSTM with an output size of (64)
-    model.add(ks.layers.CuDNNLSTM(units=embed_dimension/2))
+    model.add(ks.layers.CuDNNLSTM(units=64))
 
     # Now we'll add a dropout layer with a dropout rate of 30%, output is still (64)
     model.add(ks.layers.Dropout(rate=0.3))
@@ -59,7 +59,7 @@ def create_model(num_languages):
 
 
 # Main function to perform the training and testing operations with
-def main():
+def main_train():
     # Get the data, [X -> code samples, Y -> language labels]
     code, languages = ld.create_tokenized_data_set()
 
@@ -68,9 +68,10 @@ def main():
 
     print("Training_code shape: {}\nTesting_code shape: {}".format(training_code.shape, testing_code.shape))
 
-    model = create_model(len(languages))
+    model = create_model(len(languages.columns))
 
     print("Model Summary: {}".format(model.summary()))
+    print("Languages: {}".format(languages.columns))
 
     batch_size = 32
 
@@ -86,4 +87,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main_train()
