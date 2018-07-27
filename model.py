@@ -86,5 +86,18 @@ def main_train():
                                                                                   accuracy))
 
 
+def evaluate_file(filename):
+    raw_code = ""
+    try:
+        with open(file=filename, mode='r') as readfile:
+            raw_code += readfile.read()
+    except FileNotFoundError:
+        print("{} was not found, returning.".format(filename))
+        return
+
+    indexed_text = ld.text_to_index_array(raw_code)
+
+
+
 if __name__ == "__main__":
     main_train()
