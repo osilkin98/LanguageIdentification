@@ -43,7 +43,7 @@ def create_model(num_languages):
 
     # this will feed into a dense layer with an input of (64) and an output of (64)
     model.add(ks.layers.Dense(units=64,
-                              activation='sigmoid'  # going to use sigmoid as an activation function
+                                # going to use sigmoid as an activation function
                               ))
 
     # which will in turn feed into a final dense layer with an output of (num_languages)
