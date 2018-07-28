@@ -89,9 +89,8 @@ def main_train():
 def evaluate_file(filename):
     model = ks.models.load_model(filepath="saved_models/code_model.h5")
     to_eval = ld.create_input_evaluation(filename)
-    to_eval = to_eval[0].reshape(1, to_eval.shape[1])
-    print("To Eval: {}".format(to_eval))
-    language_probabilities = model.predict(to_eval, batch_size=1, verbose=2)[0]
+    print("To Eval: {}, to eval shape: {}".format(to_eval, to_eval.shape))
+    language_probabilities = model.predict(to_eval[0].reshape(1, to_eval.shape[1]), batch_size=1, verbose=2)[0]
     print("Language Probabilities: {}".format(language_probabilities))
     data = {"success": False}
     data["predictions"] = []
