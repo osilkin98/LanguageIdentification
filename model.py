@@ -6,7 +6,7 @@ import json
 # Create the model given a number of languages
 def create_model(num_languages):
 
-    features, embed_dimension = 10000, 128
+    features, embed_dimension = ld.max_features, 128
     model = ks.Sequential()
     # Outputs a matrix of size 100x128 with 1,280,000 parameters (10000x100x128=1280000)
     model.add(ks.layers.Embedding(input_dim=features,  # Input dimension
@@ -39,7 +39,7 @@ def create_model(num_languages):
     model.add(ks.layers.CuDNNLSTM(units=64))
 
     # Now we'll add a dropout layer with a dropout rate of 30%, output is still (64)
-    model.add(ks.layers.Dropout(rate=0.3))
+    model.add(ks.layers.Dropout(rate=0.5))
 
     # this will feed into a dense layer with an input of (64) and an output of (64)
     model.add(ks.layers.Dense(units=64,
