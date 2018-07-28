@@ -104,4 +104,5 @@ def evaluate_file(filename):
 
 
 if __name__ == "__main__":
+    main_train()
     evaluate_file("test.cpp")
