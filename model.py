@@ -15,7 +15,7 @@ def create_model(num_languages):
 
     # Outputs a matrix of size 100x128 with 49280 parameters to train
     model.add(ks.layers.Conv1D(filters=embed_dimension,  # Convolve using 128 filters
-                               kernel_size=5,            # with a kernel size of 3
+                               kernel_size=3,            # with a kernel size of 3
                                padding='same',           # Use 0 padding
                                dilation_rate=1,          # We'll using D = 1 so that way the kernels are densely packed
                                activation='relu'))       # ReLU activation layer since it works well
