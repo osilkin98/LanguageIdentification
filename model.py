@@ -75,7 +75,7 @@ def main_train():
 
     batch_size = 32
 
-    history = model.fit(code, languages, epochs=400, batch_size=batch_size)
+    history = model.fit(code, languages, epochs=50, batch_size=batch_size)
 
     model.save(filepath="saved_models/code_model.h5")
     model.save_weights(filepath="saved_models/code_model_weights.h5")
