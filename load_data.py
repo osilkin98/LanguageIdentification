@@ -5,7 +5,7 @@ import json
 
 
 # Constants
-max_features = 10000
+max_features = 100000
 languages = ('angular', 'asm', 'asp.net', 'c#', 'c++', 'css', 'delphi', 'html',
         'java', 'javascript', 'objectivec', 'pascal', 'perl', 'php',
         'powershell', 'python', 'razor', 'react', 'ruby', 'scala', 'sql',
